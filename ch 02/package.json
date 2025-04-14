@@ -1,0 +1,24 @@
+{
+  "name": "ch02",
+  "version": "1.0.0",
+  "description": "learning noe js and express jss frame work ",
+  "main": "src",
+  "scripts": {
+    "test": "node src/index.js",
+    "dev": "nodemon src/serverJSONResponse.js"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src/"
+    ],
+    "ext": "js, json"
+  },
+  "author": "lokesh sharma",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

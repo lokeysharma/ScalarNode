@@ -1,0 +1,26 @@
+{
+  "name": "ch03_expressjs01",
+  "version": "1.0.0",
+  "description": "this is to learn about express js stuff and its paradigms ",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon src/finalAPI.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "NA"
+  },
+  "keywords": [
+    "NA"
+  ],
+  "author": "Lokesh Sharma",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

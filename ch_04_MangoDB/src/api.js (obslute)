@@ -1,0 +1,101 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
+
+const app = express();
+const { PORT, MONGO_DB_USER,  MONGO_DB_PASSWORD,MONGO_URI} = process.env;
+
+
+mongoose.connect(MONGO_URI).then((connections) => {
+    console.log('MongoDB connected');
+}).catch((err) => {
+    console.log(err);
+});
+
+
+const userSchemaObj = {
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true,
+        minLength: 6,
+        maxLength: 20
+    },
+    confirmPassword: {
+        type: String,
+        required: true,
+        minLength: 6,
+        validate: function () {
+            return this.password === this.confirmPassword;
+        }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
+}
+
+
+const userSchema = new mongoose.Schema(userSchemaObj, { timestamps: true });
+const UserModel = mongoose.model('Usermodel', userSchema);
+
+console.log(UserModel.schema.obj);
+
+app.use(express.json());
+
+const createUser = async (req, res) => {
+    try {
+        const user = await UserModel.create(req.body);
+        res.status(201).json({
+            status: 'success',
+            data: {
+                user
+            }
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
+        });
+    }
+
+}
+
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await UserModel.find().select('-updatedAt -createdAt');
+        res.status(200).json({
+            status: 'success',
+            results: users.length,
+            data: {
+                users
+            }
+        });
+    }
+    catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
+        });
+    }
+}
+
+
+app.use('/api/users',createUser);
+app.use('/api/users',getAllUsers);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
